@@ -1,0 +1,19 @@
+{
+  "name": "phone-code-verify",
+  "version": "1.0.0",
+  "description": "Inputs for phone code verification",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "phone",
+    "code",
+    "verify"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "np": "^8.0.4"
+  }
+}
