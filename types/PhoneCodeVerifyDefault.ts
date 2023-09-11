@@ -6,5 +6,5 @@ export interface PhoneCodeVerifyDefaultProps {
   buttonText?: string;
   pattern?: string,
   patternMessage?: string
-  onChange?: (text: string) => void;
+  onChange?: (text: string[]) => void;
 }

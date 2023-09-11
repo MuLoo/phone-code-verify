@@ -24,12 +24,13 @@ export default function Root(props: PhoneCodeVerifyProps) {
     buttonText = '确认',
     mode = 'default',
     pattern = '',
-    patternMessage = ''
-    // onChange = () => {}
+    patternMessage = '',
+    onChange = () => {}
   } = props;
   const ids = Array.from({ length: num }).map((_, i) => i);
   const formRef = useRef(null);
   const inputRefs = ids.map(() => useRef(null))
+  const submitButtonRef = useRef(null);
   const [showPatternMessage, setShowPatternMessage] = useState(false);
 
   useEffect(() => {
@@ -50,14 +51,21 @@ export default function Root(props: PhoneCodeVerifyProps) {
   /************* methods ********** */
   const handleInput = (e: InputEvent) => {
     const input = e.target as HTMLInputElement;
+    console.log('yes , trigger', input.value);
+    const formData = new FormData(formRef.current);
+    const values = formData.getAll('inputValue') as string[]
+    onChange(values);
     const isFormValid = formRef.current.checkValidity();
-    setShowPatternMessage(!isFormValid)
+    setShowPatternMessage(!isFormValid);
     const nextInput = input.nextElementSibling as HTMLInputElement;
     if (nextInput && input.value) {
       nextInput.focus()
       if (nextInput.value) {
         nextInput.select()
       }
+    }
+    if (input.value && !nextInput && isFormValid) {
+      submitButtonRef.current.focus()
     }
   }
   const handlePaste = (e: ClipboardEvent) => {
@@ -69,12 +77,8 @@ export default function Root(props: PhoneCodeVerifyProps) {
   }
 
   const handleBackspace = (e: KeyboardEvent, inputIndex: number) => {
-    console.log('is handleBackspace', e, inputIndex);
     const input = inputRefs[inputIndex].current;
-    if (input && input.value) {
-      input.value = ''
-      return;
-    }
+    if (input && input.value) return;
     // 第二次删除，才focus到前一个输入框
     if (inputIndex <= 0) return;
     const prevInput = inputRefs[inputIndex - 1];
@@ -119,12 +123,13 @@ export default function Root(props: PhoneCodeVerifyProps) {
             pattern={pattern}
             maxLength={1}
             type="text"
+            name="inputValue"
             placeholder="-"
           />
         ))}
         </div>
         <span style={{ height: showPatternMessage ? 16 : 0}} className="PCV_patternMessage">{patternMessage}</span>
-        {button && <button type="button" className="PCV_submitButton">{buttonText}</button>}
+        {button && <button ref={submitButtonRef} type="button" className="PCV_submitButton">{buttonText}</button>}
       </form>
     </div>
   );
