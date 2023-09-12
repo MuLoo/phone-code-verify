@@ -13,21 +13,21 @@ body {
   background: #f6f6f9;
   box-sizing: border-box;
   form {
-    padding: 2rem;
+    padding: 32px;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
-    max-width: 500px;
+    min-width: 300px;
     background: #fff;
     box-sizing: border-box;
     .PCV_inputBox {
       display: flex;
       flex-direction: row;
       margin-bottom: 18px;
+      justify-content: space-evenly;
       input {
         display: block;
         background: #dde6f3;
         height: 60px;
-        width: 60px;
+        width: calc(20% - 16px);
         margin-right: 16px;
         text-align: center;
         font-size: 32px;
@@ -45,7 +45,7 @@ body {
           margin-right: 0;
         }
         &:invalid {
-          box-shadow: 0 0 0 4px lightpink;
+          box-shadow: 0 0 0 4px lightpink !important;
         }
         &:hover {
           box-shadow: 0 0 0 4px rgba(165, 179, 212, 0.6);
@@ -70,7 +70,7 @@ body {
           border-bottom: 3px solid  rgba(26, 37, 86, 0.45);
         }
         &:invalid {
-          box-shadow: none;
+          box-shadow: none !important;
           border-bottom: 3px solid lightpink;
         }
         &:focus {
@@ -93,14 +93,45 @@ body {
       font-size: 16px;
       font-weight: 400;
       background-color: #007bff;
-      border-color: #007bff;
       text-align: center;
       vertical-align: middle;
       user-select: none;
       border: 1px solid transparent;
       padding: 12px;
       border-radius: 6px;
+      transition: all 200ms;
       cursor: pointer;
+      &:disabled {
+        background-color: lightgrey;
+        cursor: not-allowed;
+      }
+      &:not(:disabled):hover, &:not(:disabled):focus {
+        background-color: #2962ff;
+      }
+      &:not(:disabled):focus {
+        outline-color: #2962ff;
+        outline-offset: 1px;
+        outline-style: double;
+      }
+      > img {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        animation: rotate 0.5s infinite linear;
+      }
     }
+  }
+}
+@keyframes rotate {
+  0% {
+    rotate: 0deg;
+  }
+  50% {
+    rotate: 180deg;
+  }
+  100% {
+    rotate:360deg;
   }
 }

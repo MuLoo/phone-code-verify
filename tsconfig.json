@@ -38,6 +38,6 @@
 			"src/*.less",
 			"src/*.tsx",
 			"src/types.ts",
-			"types/*.ts"
+			"types/*.ts",
 		],
   }

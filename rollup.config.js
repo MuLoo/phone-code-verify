@@ -11,6 +11,7 @@ import htmlTemplate from "rollup-plugin-generate-html-template";
 import pkg from "./package.json"; // 读取 package.json 配置
 import replace from "@rollup/plugin-replace";
 import postcss from 'rollup-plugin-postcss';
+import image from '@rollup/plugin-image';
 
 
 const env = process.env.NODE_ENV; // 当前运行环境，可通过 cross-env 命令行设置
@@ -43,6 +44,7 @@ const config = {
     },
   ],
   plugins: [
+    image(),
     // 解析第三方依赖
     resolve(),
     // 识别 commonjs 模式第三方依赖

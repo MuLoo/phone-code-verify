@@ -6,5 +6,8 @@ export interface PhoneCodeVerifyDefaultProps {
   buttonText?: string;
   pattern?: string,
   patternMessage?: string
+  maxWidth?: number
+  wrapperClass?: string
   onChange?: (text: string[]) => void;
+  onConfirm?: (inputsValue: string[]) => void;
 }
