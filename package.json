@@ -2,13 +2,13 @@
   "name": "phone-code-verify",
   "version": "1.0.0",
   "description": "Inputs for phone code verification",
-  "main": "./dist/index.js",
-  "module": "./dist/index.esm.js",
-  "umd": "./dist/index.umd.js",
-  "types": "types/index.d.ts",
+  "main": "./dist/lib/index.js",
+  "module": "./dist/es/index.esm.js",
+  "umd": "./dist/umd/index.umd.js",
+  "types": "./dist/types/src/index.d.ts",
   "scripts": {
     "dev": "npx rollup -wc",
-    "build": "cross-env NODE_ENV=production && npm run build:types && npx rollup -c rollup.config.js",
+    "build": "cross-env NODE_ENV=production npm run build:types && cross-env NODE_ENV=production npx rollup -c rollup.config.js",
     "clean:dist": "rimraf dist",
     "build:types": "npm run clean:dist && tsc -b ./tsconfig.types.json",
     "test": "node test/test.js",
@@ -79,5 +79,14 @@
     "> 1%",
     "iOS 7",
     "last 3 iOS versions"
-  ]
+  ],
+  "export": {
+    ".": {
+      "types": "./dist/types/src/index.d.ts",
+      "module": "./dist/es/index.esm.js",
+      "require": "./dist/lib/index.js",
+      "default": "./dist/umd/index.umd.js"
+    }
+  },
+  "files": ["dist"]
 }

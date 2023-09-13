@@ -16,12 +16,12 @@ import image from '@rollup/plugin-image';
 
 const env = process.env.NODE_ENV; // 当前运行环境，可通过 cross-env 命令行设置
 const isProd = env === "production";
-
+console.log('isProd -----', isProd);
 const name = "RollupTsTemplate"; // umd 模式的编译结果文件输出的全局变量名称
 const config = {
   // 入口文件，src/index.ts
   input: path.resolve(__dirname, "src/index.tsx"),
-  // external: ["react", "react-dom"],
+  external: isProd ? ["react", "react-dom"] : null,
   watch: {
     exclude: "node_modules/**",
   },
@@ -56,24 +56,26 @@ const config = {
     rollupTypescript(),
     replace({
       preventAssignment: true,
-      "process.env.NODE_ENV": JSON.stringify("devlopment"), // 否则会报：process is not defined的错
+      "process.env.NODE_ENV": JSON.stringify(isProd ? "production" : "devlopment"), // 否则会报：process is not defined的错
     }),
     // babel 配置
     babel({
       // 编译库使用
-      babelHelpers: env === "production" ? "bundled" : "runtime",
+      // babelHelpers: isProd ? "bundled" : "runtime",
+      babelHelpers: "runtime",
       // 只转换源代码，不转换外部依赖
       exclude: "node_modules/**",
       // babel 默认不支持 ts 需要手动添加
       extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"],
     }),
     postcss({
-      extract: path.resolve('dist/phoneCodeVerify.css')
+      // extract: true,
+      // extract: path.resolve('dist/phoneCodeVerify.css')
     }),
   ],
 };
 // 若打包正式环境，压缩代码
-if (env === "production") {
+if (isProd) {
   config.plugins.push(
     terser({
       compress: {
@@ -89,7 +91,7 @@ if (env === "production") {
     livereload("dist"), // 当dist目录中的文件发生变化时，刷新页面
     htmlTemplate({
       template: "./public/index.html",
-      target: "index.html",
+      target: "./dist/index.html",
     }),
   );
 }

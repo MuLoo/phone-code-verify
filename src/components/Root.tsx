@@ -14,7 +14,7 @@ const keyboardMapping = {
   backspace: 8,
   arrowLeft: 37,
   arrowRight: 39,
-  keyDown: 13,
+  enter: 13,
 }
 
 export default function Root(props: PhoneCodeVerifyProps) {
@@ -25,58 +25,81 @@ export default function Root(props: PhoneCodeVerifyProps) {
     button = true,
     buttonText = '确认',
     mode = 'default',
-    pattern = '',
+    pattern = null,
     patternMessage = '',
     maxWidth = 500,
     wrapperClass = '',
     onChange = () => { },
     onConfirm = () => { },
   } = props;
-  const ids = Array.from({ length: num }).map((_, i) => i);
   const formRef = useRef(null);
-  const inputRefs = ids.map(() => useRef(null))
+   const allRefs = Array.from({ length: 6 }).map((_, i) => i).map(_ => useRef(null));
+  // const ids = Array.from({ length: num }).map((_, i) => i);
+  // const inputRefsArr = ids.map(() => useRef(null))
   const submitButtonRef = useRef(null);
+  const [inputRefsArr, setInputRefs] = useState(allRefs);
   const [showPatternMessage, setShowPatternMessage] = useState(false);
   const [isComplete, setInputComplete] = useState(false);
   const [buttonLoading, showButtonLoading] = useState(false);
 
   useEffect(() => {
-    // 输入框第一位监听粘贴事件
-    if (inputRefs[0].current) {
-      inputRefs[0].current.addEventListener('paste', handlePaste, false);
-    }
-    // 输入框监听键盘事件
-    inputRefs.forEach((input, index) => {
-      input.current.addEventListener('keydown', handleKeyDownWrapper(index), false);
-      input.current.addEventListener('focus', handleInputFocus, false);
-    })
+    const actualRefs = allRefs.slice(0, num);
+    setInputRefs(actualRefs)
+  }, [num]);
+
+  useEffect(() => {
     // form表单监听input变化
     formRef.current.addEventListener('input', handleInput, false);
     return () => {
-      if (inputRefs[0].current) {
-        inputRefs[0].current.removeEventListener('paste', handlePaste);
+      if (formRef.current) {
+        formRef.current.removeEventListener('input', handleInput);
       }
-      formRef.current.removeEventListener('input', handleInput);
-      // 输入框监听键盘事件
-    inputRefs.forEach((input, index) => {
-      input.current.removeEventListener('keydown', handleKeyDownWrapper);
-      input.current.removeEventListener('focus', handleInputFocus);
-    })
     }
+  }, [num])
 
-  }, [])
+  useEffect(() => {
+    // 输入框第一位监听粘贴事件
+    if (inputRefsArr.length && inputRefsArr[0].current) {
+      inputRefsArr[0].current.addEventListener('paste', handlePaste, false);
+    }
+    // 输入框监听键盘事件
+    if (inputRefsArr.length) {
+      inputRefsArr.forEach((input, index) => {
+        input.current.addEventListener('keydown', handleKeyDownWrapper(index), false);
+        input.current.addEventListener('focus', handleInputFocus, false);
+      })
+    }
+    return () => {
+      if (inputRefsArr.length && inputRefsArr[0].current) {
+        inputRefsArr[0].current.removeEventListener('paste', handlePaste);
+      }
+      // 输入框监听键盘事件
+      if (inputRefsArr.length) {
+        inputRefsArr.forEach((input, index) => {
+          input.current && input.current.removeEventListener('keydown', handleKeyDownWrapper);
+          input.current && input.current.removeEventListener('focus', handleInputFocus);
+        })
+      }
+    }
+  }, [inputRefsArr]);
 
   useEffect(() => {
     // button监听回车事件, 只在focus时enter触发
-    submitButtonRef.current.addEventListener('keydown', handleButtonEnter, false)
-    return () => submitButtonRef.current.removeEventListener('keydown', handleButtonEnter)
+    if (submitButtonRef.current) {
+      submitButtonRef.current.addEventListener('keydown', handleButtonEnter, false)
+    }
+    return () => {
+      if (submitButtonRef.current) {
+        submitButtonRef.current.removeEventListener('keydown', handleButtonEnter)
+      }
+    }
   }, [isComplete]);
 
   useEffect(() => {
-    if (inputRefs.length) {
-      inputRefs[0].current.focus();
+    if (inputRefsArr.length) {
+      inputRefsArr[0].current.focus();
     }
-  }, []);
+  }, [inputRefsArr]);
 
   useEffect(() => {
     // 输入完毕并且无错误，则button获取焦点
@@ -102,34 +125,33 @@ export default function Root(props: PhoneCodeVerifyProps) {
         nextInput.select()
       }
     }
-    // if (input.value && !nextInput && isFormValid && submitButtonRef.current) {
-    //   setTimeout(submitButtonRef.current.focus(), 0)
-    // }
   }
   const handlePaste = (e: ClipboardEvent) => {
     e.preventDefault()
     const paste = e.clipboardData.getData('text')
-    inputRefs.forEach((input, i) => {
+    inputRefsArr.forEach((input, i) => {
       input.current.value = paste[i] || ''
     })
+    const isFormValid = formRef.current.checkValidity();
+    setShowPatternMessage(!isFormValid);
   }
 
   const handleBackspace = (e: KeyboardEvent, inputIndex: number) => {
-    const input = inputRefs[inputIndex].current;
+    const input = inputRefsArr[inputIndex].current;
     if (input && input.value) return;
     // 第二次删除，才focus到前一个输入框
     if (inputIndex <= 0) return;
-    const prevInput = inputRefs[inputIndex - 1];
+    const prevInput = inputRefsArr[inputIndex - 1];
     prevInput.current.focus();
   }
   const handleArrayLeft = (e: KeyboardEvent, inputIndex: number) => {
     if (inputIndex <= 0) return;
-    const prevInput = inputRefs[inputIndex - 1].current;
+    const prevInput = inputRefsArr[inputIndex - 1].current;
     prevInput.focus();
   }
   const handleArrayRight = (e: KeyboardEvent, inputIndex: number) => {
     if (inputIndex >= num - 1) return;
-    const nextInput = inputRefs[inputIndex + 1].current;
+    const nextInput = inputRefsArr[inputIndex + 1].current;
     nextInput.focus();
   }
 
@@ -156,8 +178,9 @@ export default function Root(props: PhoneCodeVerifyProps) {
   }
   const handleButtonEnter = (event: KeyboardEvent) => {
     const { keyCode } = event;
-    if (keyCode !== keyboardMapping.keyDown) return;
+    if (keyCode !== keyboardMapping.enter) return;
     if (document.activeElement !== submitButtonRef.current) return;
+    event.preventDefault();
     handleSubmit()
   }
 
@@ -184,10 +207,10 @@ export default function Root(props: PhoneCodeVerifyProps) {
       <form ref={formRef} style={{ maxWidth }}>
         {tip && <h5>{tip}</h5>}
         <div className={`PCV_inputBox ${mode === 'line' ? 'PCV_line' : ''}`}>
-        {ids.map((item, index) => (
+        {inputRefsArr.map((ref, index) => (
           <input
-            ref={inputRefs[index]}
-            key={item}
+            ref={ref}
+            key={index}
             pattern={pattern}
             maxLength={1}
             type="text"
@@ -196,7 +219,7 @@ export default function Root(props: PhoneCodeVerifyProps) {
           />
         ))}
         </div>
-        <span style={{ height: showPatternMessage ? 16 : 0}} className="PCV_patternMessage">{patternMessage}</span>
+        <span style={{ height: showPatternMessage ? 20 : 0}} className="PCV_patternMessage">{patternMessage}</span>
         {button && <button onClick={handleSubmit} disabled={showPatternMessage || !isComplete} ref={submitButtonRef} type="button" className="PCV_submitButton">
           {buttonLoading && <img src={LoadingIcon} alt="loading" />}
           {buttonText}</button>}

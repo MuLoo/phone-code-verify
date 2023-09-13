@@ -1,10 +1,10 @@
 export interface PhoneCodeVerifyDefaultProps {
   mode?: "line" | "default";
-  num?: number;
+  num?: 4 | 5 | 6;
   tip?: string;
   button?: boolean;
   buttonText?: string;
-  pattern?: string,
+  pattern?: string;
   patternMessage?: string
   maxWidth?: number
   wrapperClass?: string

@@ -6,6 +6,7 @@ body {
     text-align: center;
     font-size: 20px;
     margin: 18px 0;
+    font-weight: 400;
   }
   display: flex;
   justify-content: center;
@@ -22,7 +23,7 @@ body {
       display: flex;
       flex-direction: row;
       margin-bottom: 18px;
-      justify-content: space-evenly;
+      justify-content: space-between;
       input {
         display: block;
         background: #dde6f3;
@@ -80,6 +81,7 @@ body {
     }
     .PCV_patternMessage{
       height: 0px;
+      text-align: left;
       overflow: hidden;
       margin-bottom: 16px;
       color: red;
@@ -89,6 +91,7 @@ body {
     }
     .PCV_submitButton {
       width: 100%;
+      height: 45px;
       color: #fff;
       font-size: 16px;
       font-weight: 400;
@@ -109,13 +112,13 @@ body {
         background-color: #2962ff;
       }
       &:not(:disabled):focus {
-        outline-color: #2962ff;
+        outline-color: #d8e2ff;
         outline-offset: 1px;
-        outline-style: double;
+        outline-style: auto;
       }
       > img {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
         margin-right: 10px;
         display: inline-block;
         vertical-align: middle;
