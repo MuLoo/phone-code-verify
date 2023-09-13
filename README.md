@@ -5,18 +5,27 @@ phone-code-verify是一个手机验证码输入组件，它封装了在验证码
 - 支持4-6单字符位输入
 - 支持输入框内容校验，校验未通过时实时展示自定义信息以及UI提醒
 - 支持框和下划线两种布局方式
+- 支持粘贴自动填入
 - 支持键盘左右键选择输入框、删除键回退、回车键提交
 - 支持样式修改等等
 
 ## 演示
 ### 方框样式
-<video src="https://uvd.yupoo.com/leisurenana/23626104.mp4" muted></video>
+[UI演示视频](https://leisurenana.x.yupoo.com/54306700?uid=1)
+
+![默认样式](https://pic.yupoo.com/leisurenana/46c08e1b/c8735c9e.png)
+![自动校验](https://pic.yupoo.com/leisurenana/89180c68/dde15f57.png)
+![成功提交](https://pic.yupoo.com/leisurenana/3d7c4565/5d50a2e2.png)
 
 ### 单线模式
-<video src="https://uvd.yupoo.com/leisurenana/23626089.mp4" muted></video>
+[UI演示视频](https://leisurenana.x.yupoo.com/54306805?uid=1)
+
+![默认样式](https://pic.yupoo.com/leisurenana/b14bd9c9/1329d2b9.png)
+![自动校验](https://pic.yupoo.com/leisurenana/0f8e996e/b5da9a0a.png)
+![成功提交](https://pic.yupoo.com/leisurenana/a3d91d21/fb5e5e0b.png)
 
 ## 使用
-```js
+```jsx
 import { PhoneCodeVerify } from 'phone-code-verify'
 import type { PhoneCodeVerifyProps } from 'phone-code-verify'
 
@@ -53,5 +62,22 @@ function YourApp () {
 }
 ```
 
+## 样式修改
 
+样式可以使用自定义样式覆盖组件样式。
+也可以使用以下方式覆盖`PCV_xxx`样式。
+```jsx
+function YourApp () {
+  return (
+    <div>
+      <style>
+        {`.PCV_container {
+          color: red;
+        }`}
+      </style>
+      <PhoneCodeVerify {...customProps} />
+    </div>
+  )
+}
+```
 

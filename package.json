@@ -1,6 +1,6 @@
 {
   "name": "phone-code-verify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Inputs for phone code verification",
   "main": "./dist/lib/index.js",
   "module": "./dist/es/index.esm.js",
@@ -63,7 +63,7 @@
   },
   "bugs": "https://github.com/MuLoo/phone-code-verify/issues",
   "engines": {
-    "node": "v8.x"
+    "node": ">=8.9.3"
   },
   "author": "",
   "license": "ISC",
@@ -88,5 +88,7 @@
       "default": "./dist/umd/index.umd.js"
     }
   },
-  "files": ["dist"]
+  "files": [
+    "dist"
+  ]
 }
