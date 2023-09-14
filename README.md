@@ -1,4 +1,6 @@
 # phone-code-verify 简介
+中文 | [English](./README-EN.md)
+--- 
 phone-code-verify是一个手机验证码输入组件，它封装了在验证码输入时的交互与UI，是一个开箱即用的React小组件。
 
 ## 功能
