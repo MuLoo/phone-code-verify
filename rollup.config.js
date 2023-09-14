@@ -16,7 +16,7 @@ import image from '@rollup/plugin-image';
 
 const env = process.env.NODE_ENV; // 当前运行环境，可通过 cross-env 命令行设置
 const isProd = env === "production";
-console.log('isProd -----', isProd);
+
 const name = "RollupTsTemplate"; // umd 模式的编译结果文件输出的全局变量名称
 const config = {
   // 入口文件，src/index.ts
