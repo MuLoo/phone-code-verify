@@ -1,11 +1,11 @@
 export interface PhoneCodeVerifyDefaultProps {
   mode?: "line" | "default";
   num?: 4 | 5 | 6;
-  tip?: string;
+  tip?: React.ReactNode;
   button?: boolean;
-  buttonText?: string;
+  buttonText?: React.ReactNode;
   pattern?: string;
-  patternMessage?: string
+  patternMessage?: React.ReactNode;
   maxWidth?: number
   wrapperClass?: string
   onChange?: (text: string[]) => void;
