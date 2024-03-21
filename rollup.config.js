@@ -10,9 +10,8 @@ import livereload from "rollup-plugin-livereload";
 import htmlTemplate from "rollup-plugin-generate-html-template";
 import pkg from "./package.json"; // 读取 package.json 配置
 import replace from "@rollup/plugin-replace";
-import postcss from 'rollup-plugin-postcss';
-import image from '@rollup/plugin-image';
-
+import postcss from "rollup-plugin-postcss";
+import image from "@rollup/plugin-image";
 
 const env = process.env.NODE_ENV; // 当前运行环境，可通过 cross-env 命令行设置
 const isProd = env === "production";
@@ -56,7 +55,9 @@ const config = {
     rollupTypescript(),
     replace({
       preventAssignment: true,
-      "process.env.NODE_ENV": JSON.stringify(isProd ? "production" : "devlopment"), // 否则会报：process is not defined的错
+      "process.env.NODE_ENV": JSON.stringify(
+        isProd ? "production" : "devlopment",
+      ), // 否则会报：process is not defined的错
     }),
     // babel 配置
     babel({

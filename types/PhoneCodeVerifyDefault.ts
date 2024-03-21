@@ -6,8 +6,8 @@ export interface PhoneCodeVerifyDefaultProps {
   buttonText?: React.ReactNode;
   pattern?: string;
   patternMessage?: React.ReactNode;
-  maxWidth?: number
-  wrapperClass?: string
+  maxWidth?: number;
+  wrapperClass?: string;
   onChange?: (text: string[]) => void;
   onConfirm?: (inputsValue: string[]) => void;
 }
